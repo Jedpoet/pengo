@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "pengo-core",
+    "pengo-cli",
+]
+resolver = "2"
