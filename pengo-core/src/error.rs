@@ -6,6 +6,9 @@ pub enum PengoError {
     #[error("'{0}' 已經存在")]
     AlreadyExists(String),
 
+    #[error("'{0}' 尚未初始化")]
+    NovelNotExists(String),
+
     #[error("IO 錯誤：{0}")]
     Io(#[from] std::io::Error),
 

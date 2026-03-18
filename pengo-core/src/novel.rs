@@ -1,6 +1,7 @@
 use crate::error::PengoError;
+use regex::Regex;
 use std::env;
-use std::fs::{File, create_dir, write};
+use std::fs;
 use std::path::Path;
 use std::process::Command;
 
@@ -9,7 +10,7 @@ pub fn new_novel(novel_name: &str) -> Result<(), PengoError> {
         return Err(PengoError::AlreadyExists(novel_name.to_string()));
     }
 
-    create_dir(novel_name)?;
+    fs::create_dir(novel_name)?;
 
     let config_content = format!(
         r#"[book]
@@ -23,20 +24,18 @@ output_format = ["epub", "pdf"]
 [editor]
 command = "nvim"
 auto_open = true
-
-[status]
 "#,
         novel_name
     );
 
-    write(format!("{}/pengo.toml", novel_name), config_content)?;
-    File::create(format!("{}/outline.md", novel_name))?;
-    File::create(format!("{}/ideas.md", novel_name))?;
-    create_dir(format!("{}/book", novel_name))?;
-    create_dir(format!("{}/lore", novel_name))?;
-    create_dir(format!("{}/lore/characters", novel_name))?;
-    create_dir(format!("{}/lore/scenes", novel_name))?;
-    create_dir(format!("{}/drafts", novel_name))?;
+    fs::write(format!("{}/pengo.toml", novel_name), config_content)?;
+    fs::File::create(format!("{}/outline.md", novel_name))?;
+    fs::File::create(format!("{}/ideas.md", novel_name))?;
+    fs::create_dir(format!("{}/book", novel_name))?;
+    fs::create_dir(format!("{}/lore", novel_name))?;
+    fs::create_dir(format!("{}/lore/characters", novel_name))?;
+    fs::create_dir(format!("{}/lore/scenes", novel_name))?;
+    fs::create_dir(format!("{}/drafts", novel_name))?;
 
     let git_status = Command::new("git")
         .arg("init")
@@ -59,5 +58,44 @@ auto_open = true
     // TODO: add .gitignore
 
     log::info!("novel '{}' create success!", novel_name);
+    Ok(())
+}
+
+pub fn new_chapter(branch: Option<&str>, chapter_name: Option<&str>) -> Result<(), PengoError> {
+    if !Path::new("pengo.toml").exists() {
+        return Err(PengoError::NovelNotExists("找不到小說！".to_string()));
+    }
+    let branch = branch.unwrap_or("main");
+    let branch_dir = Path::new("book").join(branch);
+    if !branch_dir.exists() {
+        fs::create_dir_all(&branch_dir)?;
+    }
+    let re = Regex::new(r"^(\d{3,})-.*\.md$").unwrap();
+    let dir = fs::read_dir(&branch_dir)?;
+    let mut max_num = 1;
+    for entry in dir.flatten() {
+        let filename = entry.file_name();
+        let filename_str = filename.to_string_lossy();
+
+        if let Some(caps) = re.captures(&filename_str) {
+            let chapter_num: u32 = caps[1].parse().unwrap_or(0);
+            log::info!("匹配成功！章節編號：{}", chapter_num);
+            if chapter_num > max_num {
+                max_num = chapter_num;
+            }
+        }
+    }
+    let next_num = max_num + 1;
+    let new_filename = match chapter_name {
+        Some(name) => format!("{:03}-{}.md", next_num, name),
+        None => format!("{:03}.md", next_num),
+    };
+    // let name = chapter_name.unwrap_or("未命名章節");
+    // let new_filename = format!("{:03}-{}.md", next_num, name);
+    let new_filepath = branch_dir.join(&new_filename);
+
+    fs::File::create(&new_filepath)?;
+    log::info!("成功建立新章節：{}", new_filepath.display());
+
     Ok(())
 }
