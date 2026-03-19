@@ -62,17 +62,17 @@ auto_open = true
     Ok(())
 }
 
-pub fn chapter_new(branch: Option<&str>, chapter_name: Option<&str>) -> Result<(), PengoError> {
+pub fn chapter_new(volume: Option<&str>, chapter_name: Option<&str>) -> Result<(), PengoError> {
     if !Path::new("pengo.toml").exists() {
         return Err(PengoError::NovelNotExists("找不到小說！".to_string()));
     }
-    let branch = branch.unwrap_or("main");
-    let branch_dir = Path::new("book").join(branch);
-    if !branch_dir.exists() {
-        fs::create_dir_all(&branch_dir)?;
+    let volume = volume.unwrap_or("main");
+    let volume_dir = Path::new("book").join(volume);
+    if !volume_dir.exists() {
+        fs::create_dir_all(&volume_dir)?;
     }
     let re = Regex::new(r"^(\d{3,})-.*\.md$").unwrap();
-    let dir = fs::read_dir(&branch_dir)?;
+    let dir = fs::read_dir(&volume_dir)?;
     let mut max_num = 1;
     for entry in dir.flatten() {
         let filename = entry.file_name();
@@ -91,9 +91,7 @@ pub fn chapter_new(branch: Option<&str>, chapter_name: Option<&str>) -> Result<(
         Some(name) => format!("{:03}-{}.md", next_num, name),
         None => format!("{:03}.md", next_num),
     };
-    // let name = chapter_name.unwrap_or("未命名章節");
-    // let new_filename = format!("{:03}-{}.md", next_num, name);
-    let new_filepath = branch_dir.join(&new_filename);
+    let new_filepath = volume_dir.join(&new_filename);
 
     fs::File::create(&new_filepath)?;
     log::info!("成功建立新章節：{}", new_filepath.display());
@@ -101,20 +99,20 @@ pub fn chapter_new(branch: Option<&str>, chapter_name: Option<&str>) -> Result<(
     Ok(())
 }
 
-pub fn chapter_ls(branch: Option<&str>) -> Result<Vec<String>, PengoError> {
-    let _branch = branch.unwrap_or("main");
-    let branch_dir = Path::new("book").join(_branch);
-    if !branch_dir.exists() {
-        return Err(PengoError::BranchNotFound(format!(
+pub fn chapter_ls(volume: Option<&str>) -> Result<Vec<String>, PengoError> {
+    let volume = volume.unwrap_or("main");
+    let volume_dir = Path::new("book").join(volume);
+    if !volume_dir.exists() {
+        return Err(PengoError::VolumeNotFound(format!(
             "找不到分支資料夾：{}",
-            _branch
+            volume
         )));
     }
     let mut chls_with_num: Vec<(u32, String)> = Vec::new();
 
     let re = Regex::new(r"^(\d{3,})-.*\.md$").unwrap();
 
-    let dir = fs::read_dir(&branch_dir)?;
+    let dir = fs::read_dir(&volume_dir)?;
     for entry in dir.flatten() {
         let filename = entry.file_name();
         let filename_str = filename.to_string_lossy();
