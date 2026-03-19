@@ -61,7 +61,7 @@ auto_open = true
     Ok(())
 }
 
-pub fn new_chapter(branch: Option<&str>, chapter_name: Option<&str>) -> Result<(), PengoError> {
+pub fn chapter_new(branch: Option<&str>, chapter_name: Option<&str>) -> Result<(), PengoError> {
     if !Path::new("pengo.toml").exists() {
         return Err(PengoError::NovelNotExists("找不到小說！".to_string()));
     }
@@ -98,4 +98,31 @@ pub fn new_chapter(branch: Option<&str>, chapter_name: Option<&str>) -> Result<(
     log::info!("成功建立新章節：{}", new_filepath.display());
 
     Ok(())
+}
+
+pub fn chapter_ls(branch: Option<&str>) -> Result<Vec<String>, PengoError> {
+    let _branch = branch.unwrap_or("main");
+    let branch_dir = Path::new("book").join(_branch);
+    if !branch_dir.exists() {
+        return Err(PengoError::BranchNotFound(format!(
+            "找不到分支資料夾：{}",
+            _branch
+        )));
+    }
+    let mut chls_with_num: Vec<(u32, String)> = Vec::new();
+
+    let re = Regex::new(r"^(\d{3,})-.*\.md$").unwrap();
+
+    let dir = fs::read_dir(&branch_dir)?;
+    for entry in dir.flatten() {
+        let filename = entry.file_name();
+        let filename_str = filename.to_string_lossy();
+        if let Some(caps) = re.captures(&filename_str) {
+            let num: u32 = caps[1].parse().unwrap_or(0);
+            chls_with_num.push((num, filename_str.into_owned()));
+        }
+    }
+    chls_with_num.sort_by(|a, b| a.0.cmp(&b.0).then(a.1.cmp(&b.1)));
+    let chls: Vec<String> = chls_with_num.into_iter().map(|(_, name)| name).collect();
+    Ok(chls)
 }
