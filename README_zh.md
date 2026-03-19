@@ -148,11 +148,11 @@ auto_open = true
 ## 🗺️ 開發路線圖 (Roadmap)
 
 * [ ] **階段 1 — 核心 CLI**
-* [ ] 專案鷹架建立 (`pengo new`)
-* [ ] 章節管理 (`pengo chapter`)
-* [ ] 角色與場景管理
-* [ ] Git 封裝 (`pengo save`)
-* [ ] 靈感捕捉 (`pengo idea`)
+    - [X] 專案鷹架建立 (`pengo new`)
+    - [ ] 章節管理 (`pengo chapter`)
+    - [ ] 角色與場景管理
+    - [ ] Git 封裝 (`pengo save`)
+    - [ ] 靈感捕捉 (`pengo idea`)
 
 
 * [ ] **階段 2 — 完善與打磨**
