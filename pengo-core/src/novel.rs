@@ -2,6 +2,7 @@ use crate::error::PengoError;
 use regex::Regex;
 use std::env;
 use std::fs;
+use std::io::Write;
 use std::path::Path;
 use std::process::Command;
 
@@ -125,4 +126,14 @@ pub fn chapter_ls(branch: Option<&str>) -> Result<Vec<String>, PengoError> {
     chls_with_num.sort_by(|a, b| a.0.cmp(&b.0).then(a.1.cmp(&b.1)));
     let chls: Vec<String> = chls_with_num.into_iter().map(|(_, name)| name).collect();
     Ok(chls)
+}
+
+pub fn idea_add(idea: &str) -> Result<(), PengoError> {
+    let mut file = fs::OpenOptions::new()
+        .append(true)
+        .create(true) // Create the file if it doesn't exist
+        .open("idea.md")?;
+
+    writeln!(file, "* {}", idea)?;
+    Ok(())
 }
