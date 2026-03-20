@@ -8,3 +8,4 @@ clap = { version = "4", features = ["derive"] }  # CLI 參數
 toml = "0.8"          # 解析 pengo.toml
 serde = { version = "1", features = ["derive"] }
 git2 = "0.19"         # 封裝 git（或直接 std::process::Command 呼叫 git）
+pengo-core = { path = "../pengo-core" }
