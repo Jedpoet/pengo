@@ -108,8 +108,8 @@ pengo save "Finished chapter 2"
 | Command | Alias | Description |
 |---|---|---|
 | `pengo new <name>` | | Create a new novel project |
-| `pengo chapter new [title]` | `pengo next` | Create and open the next chapter |
-| `pengo chapter list` | | List all chapters |
+| `pengo chapter new --volume [volume] [title]` | `pengo next --volume [volume] [title]` | Create and open the next chapter |
+| `pengo chapter list --volume [volume]` | | List all chapters |
 | `pengo character add <name>` | | Add a new character |
 | `pengo character list` | | List all characters |
 | `pengo scene add <name>` | | Add a new scene/location |
