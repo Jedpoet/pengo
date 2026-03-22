@@ -1,4 +1,4 @@
-# 🐧 pengo
+# 🐧 PenGo
 > **Cargo for Novelists.**
 > A structured, CLI-based writing tool for authors who think like engineers.
 
@@ -11,14 +11,14 @@ If you are tired of messy Word documents, love Markdown, and believe your novel 
 
 ---
 
-## 📖 Why pengo?
+## 📖 Why PenGo?
 
 Most writing tools fall into two categories:
 
 1. **Too Simple:** Plain text editors that lack project management.
 2. **Too Complex:** Bloated GUI software (e.g. Scrivener) that locks your data in proprietary formats.
 
-**pengo** hits the sweet spot. It treats your novel as a **project**, your chapters as **source files**, and your characters and scenes as **managed assets**.
+**PenGo** hits the sweet spot. It treats your novel as a **project**, your chapters as **source files**, and your characters and scenes as **managed assets**.
 
 ---
 
@@ -35,7 +35,7 @@ Most writing tools fall into two categories:
 
 ## 🛠️ Installation
 
-> pengo is currently in early development.
+> PenGo is currently in early development.
 
 ```bash
 git clone https://github.com/jedpoet/pengo.git
@@ -151,6 +151,10 @@ auto_open = true
 - [ ] **Phase 2 — Polish**
   - [ ] `pengo status` with word count and progress
   - [ ] `pengo build` export via pandoc (txt / epub / pdf)
+
+- [ ] **Phase 2.5 - Editor Integrations**
+  - [ ] Neovim Plugin (pengo.nvim)
+  - [ ] Obsidian Plugin
 
 - [ ] **Phase 3 — GUI**
   - Standalone GUI application powered by `pengo-core`
