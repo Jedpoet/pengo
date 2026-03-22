@@ -2,6 +2,8 @@
 > **Cargo for Novelists.**
 > A structured, CLI-based writing tool for authors who think like engineers.
 
+[中文](/README_zh.md)
+
 [![Rust](https://img.shields.io/badge/built_with-Rust-dca282.svg)](https://www.rust-lang.org/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
