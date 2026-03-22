@@ -141,12 +141,12 @@ auto_open = true
 
 ## 🗺️ Roadmap
 
-- [ ] **Phase 1 — Core CLI**
-  - [ ] Project scaffolding (`pengo new`)
-  - [ ] Chapter management (`pengo chapter`)
-  - [ ] Character and scene management
+- [X] **Phase 1 — Core CLI**
+  - [X] Project scaffolding (`pengo new`)
+  - [X] Chapter management (`pengo chapter`)
+  - [X] Character and scene management
   - [ ] Git wrapper (`pengo save`)
-  - [ ] Idea capture (`pengo idea`)
+  - [X] Idea capture (`pengo idea`)
 
 - [ ] **Phase 2 — Polish**
   - [ ] `pengo status` with word count and progress

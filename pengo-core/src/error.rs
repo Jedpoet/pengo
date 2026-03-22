@@ -11,6 +11,18 @@ pub enum PengoError {
     #[error("'{0}' 卷不存在")]
     VolumeNotFound(String),
 
+    #[error("'{0}' 已經存在")]
+    CharacterExists(String),
+
+    #[error("角色資料夾不存在")]
+    CharactersNotFound(),
+
+    #[error("'{0}' 已經存在")]
+    SceneExists(String),
+
+    #[error("場景資料夾不存在")]
+    ScenesNotFound(),
+
     #[error("IO 錯誤：{0}")]
     Io(#[from] std::io::Error),
 

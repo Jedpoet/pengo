@@ -123,6 +123,66 @@ pub fn chapter_ls(volume: Option<String>) -> Result<Vec<String>, PengoError> {
     Ok(chls)
 }
 
+pub fn character_new(name: String) -> Result<(), PengoError> {
+    let file_name = format!("{}.md", name);
+    let character = Path::new("lore").join("characters").join(&file_name);
+    if character.exists() {
+        return Err(PengoError::CharacterExists(name));
+    }
+
+    fs::File::create(&character)?;
+
+    log::info!("成功建立新角色：{}", character.display());
+    Ok(())
+}
+
+pub fn character_ls() -> Result<Vec<String>, PengoError> {
+    let characters_file = Path::new("lore").join("characters");
+    if !characters_file.exists() {
+        return Err(PengoError::CharactersNotFound());
+    }
+
+    let mut characters: Vec<String> = Vec::new();
+    let dir = fs::read_dir(&characters_file)?;
+    for entry in dir.flatten() {
+        let filename = entry.file_name();
+        let filename_str = filename.to_string_lossy();
+        characters.push(filename_str.into_owned());
+    }
+
+    Ok(characters)
+}
+
+pub fn scene_new(name: String) -> Result<(), PengoError> {
+    let file_name = format!("{}.md", name);
+    let scene = Path::new("lore").join("scenes").join(&file_name);
+    if scene.exists() {
+        return Err(PengoError::SceneExists(name));
+    }
+
+    fs::File::create(&scene)?;
+
+    log::info!("成功建立新角色：{}", scene.display());
+    Ok(())
+}
+
+pub fn scene_ls() -> Result<Vec<String>, PengoError> {
+    let scenes_file = Path::new("lore").join("scenes");
+    if !scenes_file.exists() {
+        return Err(PengoError::ScenesNotFound());
+    }
+
+    let mut scenes: Vec<String> = Vec::new();
+    let dir = fs::read_dir(&scenes_file)?;
+    for entry in dir.flatten() {
+        let filename = entry.file_name();
+        let filename_str = filename.to_string_lossy();
+        scenes.push(filename_str.into_owned());
+    }
+
+    Ok(scenes)
+}
+
 pub fn idea_add(idea: &str) -> Result<(), PengoError> {
     let mut file = fs::OpenOptions::new()
         .append(true)
