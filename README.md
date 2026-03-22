@@ -40,7 +40,7 @@ Most writing tools fall into two categories:
 ```bash
 git clone https://github.com/jedpoet/pengo.git
 cd pengo
-cargo install --path .
+cargo install --path pengo-cli
 ```
 
 ---
