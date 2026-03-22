@@ -42,18 +42,10 @@ auto_open = true
         .arg("init")
         .current_dir(novel_name)
         .status()
-        .map_err(|e| {
-            PengoError::GitError(format!(
-                "無法啟動 Git (請確認是否已安裝 Git)。詳細錯誤: {}",
-                e
-            ))
-        })?;
+        .map_err(|e| PengoError::GitError(e.to_string()))?;
 
     if !git_status.success() {
-        return Err(PengoError::GitError(format!(
-            "Git 命令回傳了失敗的狀態碼: {}",
-            git_status
-        )));
+        return Err(PengoError::GitError(git_status.to_string()));
     }
 
     // TODO: add .gitignore
@@ -64,7 +56,7 @@ auto_open = true
 
 pub fn chapter_new(volume: Option<String>, chapter_name: Option<String>) -> Result<(), PengoError> {
     if !Path::new("pengo.toml").exists() {
-        return Err(PengoError::NovelNotExists("找不到小說！".to_string()));
+        return Err(PengoError::NovelNotExists());
     }
     let volume = volume.unwrap_or("volume1".to_string());
     let volume_dir = Path::new("book").join(volume);
@@ -100,6 +92,9 @@ pub fn chapter_new(volume: Option<String>, chapter_name: Option<String>) -> Resu
 }
 
 pub fn chapter_ls(volume: Option<String>) -> Result<Vec<String>, PengoError> {
+    if !Path::new("pengo.toml").exists() {
+        return Err(PengoError::NovelNotExists());
+    }
     let volume = volume.unwrap_or("volume1".to_string());
     let volume_dir = Path::new("book").join(&volume);
     if !volume_dir.exists() {
@@ -124,6 +119,9 @@ pub fn chapter_ls(volume: Option<String>) -> Result<Vec<String>, PengoError> {
 }
 
 pub fn character_new(name: String) -> Result<(), PengoError> {
+    if !Path::new("pengo.toml").exists() {
+        return Err(PengoError::NovelNotExists());
+    }
     let file_name = format!("{}.md", name);
     let character = Path::new("lore").join("characters").join(&file_name);
     if character.exists() {
@@ -137,6 +135,9 @@ pub fn character_new(name: String) -> Result<(), PengoError> {
 }
 
 pub fn character_ls() -> Result<Vec<String>, PengoError> {
+    if !Path::new("pengo.toml").exists() {
+        return Err(PengoError::NovelNotExists());
+    }
     let characters_file = Path::new("lore").join("characters");
     if !characters_file.exists() {
         return Err(PengoError::CharactersNotFound());
@@ -154,6 +155,9 @@ pub fn character_ls() -> Result<Vec<String>, PengoError> {
 }
 
 pub fn scene_new(name: String) -> Result<(), PengoError> {
+    if !Path::new("pengo.toml").exists() {
+        return Err(PengoError::NovelNotExists());
+    }
     let file_name = format!("{}.md", name);
     let scene = Path::new("lore").join("scenes").join(&file_name);
     if scene.exists() {
@@ -167,6 +171,9 @@ pub fn scene_new(name: String) -> Result<(), PengoError> {
 }
 
 pub fn scene_ls() -> Result<Vec<String>, PengoError> {
+    if !Path::new("pengo.toml").exists() {
+        return Err(PengoError::NovelNotExists());
+    }
     let scenes_file = Path::new("lore").join("scenes");
     if !scenes_file.exists() {
         return Err(PengoError::ScenesNotFound());
@@ -184,6 +191,9 @@ pub fn scene_ls() -> Result<Vec<String>, PengoError> {
 }
 
 pub fn idea_add(idea: &str) -> Result<(), PengoError> {
+    if !Path::new("pengo.toml").exists() {
+        return Err(PengoError::NovelNotExists());
+    }
     let mut file = fs::OpenOptions::new()
         .append(true)
         .create(true) // Create the file if it doesn't exist

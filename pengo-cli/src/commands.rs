@@ -12,45 +12,67 @@ pub struct Cli {
 
 #[derive(Subcommand)]
 pub enum Commands {
-    /// initializate new novel
+    /// Initialize a new novel project
     New {
-        /// novel title
+        /// The title of the novel
         title: String,
     },
 
-    /// chapter operations
+    /// Manage chapters
     Chapter {
-        /// 指定要操作的卷 (Volume)
+        /// Specify the target volume
         #[arg(short, long, global = true)]
         volume: Option<String>,
 
         #[command(subcommand)]
-        command: PengoOp,
+        command: ChapterOp,
     },
 
+    /// Manage characters
     Character {
-        ///command
         #[command(subcommand)]
-        command: PengoOp,
+        command: CharacterOp,
     },
 
+    /// Manage scenes
     Scene {
-        ///command
         #[command(subcommand)]
-        command: PengoOp,
+        command: SceneOp,
     },
 
-    /// add your idea to idea.md
+    Save {
+        message: String,
+    },
+
+    Status,
+
+    /// Add a new idea to idea.md
     Idea {
-        /// Your Idea
+        /// The idea content to save
         idea: String,
     },
 }
-#[derive(Clone, Subcommand)]
-pub enum PengoOp {
-    /// Create a new xxx
-    New { name: Option<String> },
 
-    /// List all xxx
+#[derive(Clone, Subcommand)]
+pub enum ChapterOp {
+    /// Create a new chapter
+    New { name: Option<String> },
+    /// List all chapters
+    List,
+}
+
+#[derive(Clone, Subcommand)]
+pub enum CharacterOp {
+    /// Create a new character
+    New { name: Option<String> },
+    /// List all characters
+    List,
+}
+
+#[derive(Clone, Subcommand)]
+pub enum SceneOp {
+    /// Create a new scene
+    New { name: Option<String> },
+    /// List all scenes
     List,
 }

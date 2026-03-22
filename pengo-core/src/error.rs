@@ -2,30 +2,30 @@ use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub enum PengoError {
-    #[error("'{0}' 已經存在")]
+    #[error("'{0}' already exists")]
     AlreadyExists(String),
 
-    #[error("'{0}' 尚未初始化")]
-    NovelNotExists(String),
+    #[error("Novel is not initialized")]
+    NovelNotExists(),
 
-    #[error("'{0}' 卷不存在")]
+    #[error("Volume '{0}' not found")]
     VolumeNotFound(String),
 
-    #[error("'{0}' 已經存在")]
+    #[error("Character '{0}' already exists")]
     CharacterExists(String),
 
-    #[error("角色資料夾不存在")]
+    #[error("Characters directory not found")]
     CharactersNotFound(),
 
-    #[error("'{0}' 已經存在")]
+    #[error("Scene '{0}' already exists")]
     SceneExists(String),
 
-    #[error("場景資料夾不存在")]
+    #[error("Scenes directory not found")]
     ScenesNotFound(),
 
-    #[error("IO 錯誤：{0}")]
+    #[error("IO error: {0}")]
     Io(#[from] std::io::Error),
 
-    #[error("Git 初始化失敗: {0}")]
+    #[error("Git initialization failed: {0}")]
     GitError(String),
 }
