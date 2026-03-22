@@ -156,13 +156,16 @@ auto_open = true
 
 
 * [ ] **階段 2 — 完善與打磨**
-* [ ] 包含字數統計與進度的 `pengo status`
-* [ ] 透過 pandoc 進行 `pengo build` 匯出 (txt / epub / pdf)
+    - [ ] 包含字數統計與進度的 `pengo status`
+    - [ ] 透過 pandoc 進行 `pengo build` 匯出 (txt / epub / pdf)
 
+* [ ] **階段 2.5 - 與主流編輯器整合**
+    - [ ] Neovim 插件 (pengo.nvim)
+    - [ ] Obsidian 插件
 
 * [ ] **階段 3 — GUI**
-* 由 `pengo-core` 驅動的獨立 GUI 應用程式
-* 針對非開發者的寫作者
+    - 由 `pengo-core` 驅動的獨立 GUI 應用程式
+    - 針對非開發者的寫作者
 
 
 
